@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">⚡ VoltWatch Admin Dashboard</h2>
+
+    <!-- STAT CARDS -->
+    <div class="row text-center mb-4">
+        <div class="col-md-4">
+            <div class="card shadow p-3">
+                <h5>Total Complaints</h5>
+                <h2>{{ total }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-3">
+                <h5>Pending</h5>
+                <h2 class="text-warning">{{ pending }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-3">
+                <h5>Resolved</h5>
+                <h2 class="text-success">{{ resolved }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRAPH -->
+    <div class="card p-4 shadow mb-4">
+        <h4 class="text-center">Complaint Statistics</h4>
+        <canvas id="adminChart"></canvas>
+    </div>
+
+    <!-- MAP -->
+    <div class="card p-4 shadow mb-4">
+        <h4 class="text-center">📍 District Monitoring Map</h4>
+        <div id="map" style="height: 500px;"></div>
+    </div>
+
+    <!-- COMPLAINT TABLE -->
+    <div class="card p-4 shadow mb-4">
+        <h4>All Complaints</h4>
+
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for c in complaints %}
+                <tr>
+                    <td>{{ c[0] }}</td>
+                    <td>{{ c[1] }}</td>
+                    <td>{{ c[2] }}</td>
+                    <td>{{ c[3] }}</td>
+
+                    <td>
+                        {% if c[4] == "Pending" %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% else %}
+                            <span class="badge bg-success">Resolved</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if c[4] == "Pending" %}
+                            <a href="/update_status/{{ c[0] }}" class="btn btn-success btn-sm">
+                                Resolve
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary btn-sm" disabled>
+                                Done
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TOP USERS -->
+    <div class="card p-4 shadow">
+        <h4>🏆 Top High Bill Users</h4>
+        <table class="table text-center">
+            <tr>
+                <th>Name</th>
+                <th>Highest Bill</th>
+            </tr>
+            {% for u in top_users %}
+            <tr>
+                <td>{{ u[0] }}</td>
+                <td>₹{{ u[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+<!-- 🔥 CHART JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const labels = {{ labels | tojson | safe }};
+const data = {{ values | tojson | safe }};
+
+new Chart(document.getElementById("adminChart"), {
+    type: "bar",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Complaints",
+            data: data,
+            backgroundColor: ["#0d6efd", "#ffc107", "#198754"]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        }
+    }
+});
+</script>
+
+<!-- 🔥 LEAFLET (IMPORTANT) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- 🔥 MAP SCRIPT -->
+<script>
+setTimeout(function () {
+
+    var map = L.map('map').setView([22.7196, 75.8577], 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    var users = [];
+
+    const names = [
+        "Amit", "Rahul", "Priya", "Neha", "Rohit", "Kavita",
+        "Ankit", "Pooja", "Suresh", "Ramesh", "Sneha", "Vikas",
+        "Deepak", "Meena", "Arjun", "Komal", "Manish", "Nisha"
+    ];
+
+    for (let i = 0; i < 100; i++) {
+        let name = names[Math.floor(Math.random() * names.length)] + i;
+
+        let lat = 22.60 + Math.random() * 0.25;
+        let lng = 75.70 + Math.random() * 0.30;
+
+        let risk = Math.random() > 0.7 ? "high" : "low";
+
+        users.push({name, lat, lng, risk});
+    }
+
+    users.forEach(u => {
+        var color = u.risk === "high" ? "red" : "green";
+
+        var marker = L.circleMarker([u.lat, u.lng], {
+            color: color,
+            radius: 6
+        }).addTo(map);
+
+        marker.bindPopup(u.name + " (" + u.risk + ")");
+    });
+
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 500);
+
+}, 1000);
+</script>
+
+{% endblock %}

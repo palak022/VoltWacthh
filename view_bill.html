@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">View Electricity Bill</h2>
+
+    <div class="card shadow p-4 col-md-6 mx-auto">
+
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Enter Consumer Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <button class="btn btn-yellow w-100">Search Bill</button>
+        </form>
+
+    </div>
+
+    {% if bills %}
+        <div class="mt-5">
+            <h4 class="text-center mb-3">Bill Details</h4>
+
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-warning">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Units</th>
+                        <th>Bill Amount</th>
+                        <th>Month</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in bills %}
+                    <tr>
+                        <td>{{ bill[0] }}</td>
+                        <td>{{ bill[1] }}</td>
+                        <td>{{ bill[2] }}</td>
+                        <td>{{ bill[3] }}</td>
+                        <td>{{ bill[4] }}</td>
+                        <td>{{ bill[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

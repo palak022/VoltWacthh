@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="text-center mb-4">⚡ VoltWatch Dashboard</h2>
+
+<!-- RISK SCORE -->
+<div class="alert alert-dark text-center">
+    🔥 Risk Score: {{ risk_score }}/100
+</div>
+
+<!-- USAGE CHANGE -->
+{% if usage_diff is not none %}
+<div class="alert alert-info text-center">
+    📊 Usage Change: {{ usage_diff }} units
+</div>
+{% endif %}
+
+<!-- HIGH BILL ALERT -->
+{% for a in alerts %}
+<div class="alert alert-warning text-center">
+    ⚠ {{ a }}
+</div>
+{% endfor %}
+
+<!-- THEFT ALERT -->
+{% for t in theft_alerts %}
+<div class="alert alert-danger text-center">
+    🚨 {{ t }}
+</div>
+{% endfor %}
+
+<!-- 🔥 NEW: ML ANOMALY ALERT -->
+{% for an in anomalies %}
+<div class="alert alert-danger text-center">
+    🤖 {{ an }}
+</div>
+{% endfor %}
+
+<!-- PREDICTED BILL -->
+<div class="card p-3 text-center mb-4 shadow">
+    <h5>Predicted Next Month Bill</h5>
+    <h3>₹{{ predicted_bill }}</h3>
+</div>
+
+<!-- GRAPH -->
+<div class="card p-4 mb-4 shadow">
+    <h4 class="text-center">Monthly Usage Trend</h4>
+    <canvas id="chart"></canvas>
+</div>
+
+<!-- BILLS TABLE -->
+<div class="card p-4 shadow">
+<table class="table table-bordered text-center">
+<tr class="table-dark">
+    <th>Units</th>
+    <th>Bill (₹)</th>
+    <th>Month</th>
+</tr>
+
+{% for b in bills %}
+<tr>
+<td>{{ b[1] }}</td>
+<td>{{ b[2] }}</td>
+<td>{{ b[3] }}-{{ b[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+
+<!-- CHART -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById("chart"), {
+type: "line",
+data: {
+labels: {{ months|tojson }},
+datasets: [{
+label: "Units Consumed",
+data: {{ units|tojson }},
+borderColor: "#f4b400",
+fill: false,
+tension: 0.3
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+display: true
+}
+}
+}
+});
+</script>
+
+{% endblock %}

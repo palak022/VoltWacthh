@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <h2 class="text-center mb-4">AI Electricity Usage Detection</h2>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="units" class="form-label">Units Consumed</label>
+            <input type="number" class="form-control" id="units" name="units" placeholder="Enter Units" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="bill" class="form-label">Bill Amount</label>
+            <input type="number" class="form-control" id="bill" name="bill" placeholder="Enter Bill" required>
+        </div>
+
+        <button type="submit" class="btn btn-yellow w-100">Check Usage</button>
+    </form>
+
+    {% if result %}
+        <div class="alert mt-4 text-center" 
+             style="background-color: {{ result_bg }}; color: white; font-weight: bold; font-size: 1.2rem; border-radius: 10px; padding: 15px;">
+            {{ result }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

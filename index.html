@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero text-center">
+    <div class="container">
+        <h1 class="display-4">Powering Homes with Safety & Reliability</h1>
+        <p class="lead mt-3">
+            Manage electricity complaints, bills and detect suspicious usage with smart AI.
+        </p>
+
+        <a href="/register" class="btn btn-dark mt-4">Register Complaint</a>
+    </div>
+</section>
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">Our Services</h2>
+
+    <div class="row text-center">
+
+        <div class="col-md-4">
+            <div class="card card-custom p-4 shadow">
+                <h4>Complaint System</h4>
+                <p>Register and track electricity-related issues easily.</p>
+                <a href="/register" class="btn btn-yellow">Go</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-custom p-4 shadow">
+                <h4>Bill Management</h4>
+                <p>View and manage electricity bill records.</p>
+                <a href="/view_bill" class="btn btn-yellow">Go</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-custom p-4 shadow">
+                <h4>AI Usage Detection</h4>
+                <p>Detect suspicious electricity usage using ML.</p>
+                <a href="/predict" class="btn btn-yellow">Go</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

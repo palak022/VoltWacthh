@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VoltWatch</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .navbar {
+            background-color: #ffcc00;
+        }
+
+        .btn-yellow {
+            background-color: #ffcc00;
+            border: none;
+        }
+
+        .btn-yellow:hover {
+            background-color: #e6b800;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- 🔥 NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+
+        <!-- LOGO -->
+        <a class="navbar-brand fw-bold" href="/">⚡ VoltWatch</a>
+
+        <!-- BUTTONS -->
+        <div class="d-flex gap-2">
+
+            <a href="/register" class="btn btn-sm btn-dark">Complaint</a>
+
+            <a href="/view_bill" class="btn btn-sm btn-dark">View Bills</a>
+
+            <a href="/predict" class="btn btn-sm btn-dark">Predict</a>
+
+            <!-- ADMIN -->
+            <a href="/login" class="btn btn-sm btn-dark">
+                Admin Dashboard
+            </a>
+
+            <!-- CONSUMER -->
+            {% if session.get("consumer") %}
+                <a href="/consumer_dashboard" class="btn btn-sm btn-dark">
+                    Dashboard
+                </a>
+
+                <a href="/consumer_login" class="btn btn-sm btn-dark">
+                    Login
+                </a>
+            {% else %}
+                <a href="/consumer_login" class="btn btn-sm btn-dark">
+                    Login
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

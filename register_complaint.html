@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Register Electricity Complaint</h2>
+
+    <div class="card shadow p-4 col-md-6 mx-auto">
+
+        <!-- SUCCESS MESSAGE -->
+        {% if message %}
+            <div class="alert alert-success text-center">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Consumer Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Complaint Type</label>
+                <select name="type" class="form-select" required>
+                    <option value="Billing Issue">Billing Issue</option>
+                    <option value="Power Cut">Power Cut</option>
+                    <option value="Meter Problem">Meter Problem</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <button class="btn btn-yellow w-100">Submit Complaint</button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
